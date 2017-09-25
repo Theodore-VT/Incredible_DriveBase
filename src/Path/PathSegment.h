@@ -1,34 +1,47 @@
+
 /*
- * A path segment is two WayPoints joined
- * by a straight line or an arc
+ * Segment of path, arc or line
  */
+
+
+//defining NULL, because eclipse...
+#ifndef NULL
+#define NULL   ((void *) 0)
+#endif
 
 #ifndef PATHSEGMENT_H
 #define PATHSEGMENT_H
 
-#include <WayPoint.h>
+#define TO_END 0
+#define TO_START 1
+#define TO_CLOSEST_POINT 2
 
-class PathSegment
+#define STRAIGHT_LINE 0
+#define ARC 1
+
+//0 so it does not affect the maths
+#define NO_RADIUS 0
+
+#include "Point.h"
+#include "Math.h"
+
+class Path_Segment
 {
 public:
-	PathSegment(double timeStamp);
-	virtual ~PathSegment();
+	Path_Segment(Point Start, Point End, Point Center = NULL);
+	virtual ~Path_Segment();
 
-	void Update(double timeStamp);
-
-	void ExtrapolateMotioState(); //TODO
-
-	void SetStart(WayPoint wantedStart);
-	WayPoint GetStart();
-
-	void SetEnd(WayPoint wantedEnd);
-	WayPoint GetEnd();
+	double Distance(Point From, int To);
 
 private:
 
-	double m_clock;
+	//0 if line, 1 if arc
+	bool Segment_Type_;
 
-	WayPoint Start, End;
+	//Only for arc segments
+	double Radius_;
+
+	Point Start_, End_, Center_;
 };
 
 #endif
