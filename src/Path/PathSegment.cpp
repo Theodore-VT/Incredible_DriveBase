@@ -90,3 +90,18 @@ Point Path_Segment::GetClosestPoint(Point From)
 		return NULL;
 }
 
+float Path_Segment::GetSteeringAngle(float RobotAngle)
+{
+	return 0;
+}
+
+float Path_Segment::GetLineSteeringAngle(float RobotAngle)
+{
+	//1. find angle of the line
+	float DeltaX = Start_.X() - End_.X();
+	float DeltaY = Start_.Y() - End_.Y();
+
+	float LineAngle = std::atan2(DeltaY, DeltaX) * 180 / M_PI;
+
+	DistAngles(RobotAngle, LineAngle)
+}

@@ -33,8 +33,9 @@ Point::Point(int X, int Y)
 
 void Point::RotateBy(float Angle)
 {
-	X_ = X_ * std::cos(Angle) - Y_ * std::cos(Angle);
-	Y_ = Y_ * std::cos(Angle) + X_ * std::cos(Angle);
+	float temp = X_;
+	X_ = X_ * std::cos(Angle) - Y_ * std::sin(Angle);
+	Y_ = Y_ * std::sin(Angle) + temp * std::cos(Angle);
 }
 
 float Point::Enclidean_Dist()

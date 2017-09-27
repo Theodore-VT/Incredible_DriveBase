@@ -23,20 +23,24 @@
 #define NO_RADIUS 0
 
 #include "Point.h"
-#include "Math.h"
+#include <Math.h>
+#include "src/Maths.h"
 
 class Path_Segment
 {
 public:
 	Path_Segment(Point Start, Point End, Point Center = NULL);
-	Path_Segment(POint Start, Point End, float Radius);
+	Path_Segment(Point Start, Point End, float Radius);
 	virtual ~Path_Segment();
 
 	double Distance(Point From, int To);
 	Point GetClosestPoint(Point From);
 
+	float GetSteeringAngle(float RobotAngle);	//[-1 ... 0 ... 1]
+
 private:
 
+	float GetLineSteeringAngle(float RobotAngle);
 	//0 if line, 1 if arc
 	bool Segment_Type_;
 
