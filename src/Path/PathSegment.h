@@ -29,9 +29,11 @@ class Path_Segment
 {
 public:
 	Path_Segment(Point Start, Point End, Point Center = NULL);
+	Path_Segment(POint Start, Point End, float Radius);
 	virtual ~Path_Segment();
 
 	double Distance(Point From, int To);
+	Point GetClosestPoint(Point From);
 
 private:
 
