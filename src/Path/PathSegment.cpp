@@ -90,18 +90,28 @@ Point Path_Segment::GetClosestPoint(Point From)
 		return NULL;
 }
 
-float Path_Segment::GetSteeringAngle(float RobotAngle)
+float Path_Segment::GetSteeringAngle(Point RobotPos)
 {
-	return 0;
+	static float Error, PrevError, TotalError;
+	//1. find of wich side of the line we are
+	//Delta < 0 : one side; Delta > 0 : other side
+	float Delta = (RobotPos.X() - Start_.X()) * (End_.Y() - Start_.Y()) -
+				  (RobotPos.Y() - Start_.Y()) * (End_.X() - Start_.X());	//This methode is called theouter product
+
+
+	//2. Set Error
+	PrevError = Error;
+	Error = this->Distance(RobotPos, TO_CLOSEST_POINT) * (Delta / std::abs(Delta));
+	TotalError += Error;
+
+	//3. Calculate PID control
+	float Steer = (PID_.P_ * Error) + (PID_.I_ * TotalError) + (PID_.D_ * (Error - PrevError));
+
+	 if(Steer < -1)
+		 Steer = -1;
+	 if(Steer > 1)
+		 Steer = 1;
+
+	return Steer;
 }
 
-float Path_Segment::GetLineSteeringAngle(float RobotAngle)
-{
-	//1. find angle of the line
-	float DeltaX = Start_.X() - End_.X();
-	float DeltaY = Start_.Y() - End_.Y();
-
-	float LineAngle = std::atan2(DeltaY, DeltaX) * 180 / M_PI;
-
-	DistAngles(RobotAngle, LineAngle)
-}
