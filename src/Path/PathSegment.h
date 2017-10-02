@@ -24,7 +24,6 @@
 
 #include "Point.h"
 #include <Math.h>
-#include "src/Maths.h"
 #include "src/PID.h"
 
 class Path_Segment
@@ -34,12 +33,11 @@ public:
 	Path_Segment(Point Start, Point End, float Radius);
 	virtual ~Path_Segment();
 
-
-
 	double Distance(Point From, int To);
 	Point GetClosestPoint(Point From);
 
-	float GetSteeringAngle(Point RobotAngle);	//[-1 ... 0 ... 1]
+	float GetSteeringAngle(Point RobotPos);	//[-1 ... 0 ... 1]
+	float GetForwardVal(Point RobotPos);
 
 private:
 

@@ -54,7 +54,6 @@ double Path_Segment::Distance(Point From, int To)
 		else if(Segment_Type_ == ARC)
 		{
 			return Point(From, this->GetClosestPoint(From).Enclidean_Dist());
-
 		}
 	}
 
@@ -107,6 +106,7 @@ float Path_Segment::GetSteeringAngle(Point RobotPos)
 	//3. Calculate PID control
 	float Steer = (PID_.P_ * Error) + (PID_.I_ * TotalError) + (PID_.D_ * (Error - PrevError));
 
+	//4. Normalize output
 	 if(Steer < -1)
 		 Steer = -1;
 	 if(Steer > 1)
