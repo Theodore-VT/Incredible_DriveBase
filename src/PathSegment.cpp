@@ -1,10 +1,11 @@
 
 #include "PathSegment.h"
 
-Path_Segment::Path_Segment(Point Start, Point End, Point Center):
+Path_Segment::Path_Segment(float MaxVelocity, Point Start, Point End, Point Center):
 Start_(Start),
 End_(End),
-Center_(Center)
+Center_(Center),
+MaxVel(MaxVelocity)
 {
 	if(Center == NULL)
 	{
@@ -83,10 +84,12 @@ Point Path_Segment::GetClosestPoint(Point From)
 		float Angle = std::atan2(Start_.Y() - From.Y(), Start_.X() - From.X()) -
 					  std::atan2(Center_.Y() - From.Y(), Center_.X() - From.X());
 
-		return Start_.RotateBy(Angle);
+		Point TempPoint = Start_;
+		TempPoint.RotateBy(Angle);
+		return TempPoint;
 	}
 	else
-		return NULL;
+		return Point(0, 0);
 }
 
 float Path_Segment::GetSteeringAngle(Point RobotPos)
@@ -104,7 +107,7 @@ float Path_Segment::GetSteeringAngle(Point RobotPos)
 	TotalError += Error;
 
 	//3. Calculate PID control
-	float Steer = (PID_.P_ * Error) + (PID_.I_ * TotalError) + (PID_.D_ * (Error - PrevError));
+	float Steer = (PID_Steering.P_ * Error) + (PID_Steering.I_ * TotalError) + (PID_Steering.D_ * (Error - PrevError));
 
 	//4. Normalize output
 	 if(Steer < -1)
@@ -113,5 +116,31 @@ float Path_Segment::GetSteeringAngle(Point RobotPos)
 		 Steer = 1;
 
 	return Steer;
+}
+
+float Path_Segment::GetForwardVal(Point RobotPos)
+{
+	static float Error, PrevError, TotalError;
+
+	//1. Set Error
+	PrevError = Error;
+	Error = this->Distance(this->GetClosestPoint(RobotPos), TO_END);
+	if(PrevError < Error)
+		Error = -Error;
+	TotalError += Error;
+
+	//3. Calculate PID control
+	float Forward = (PID_Forward.P_ * Error) + (PID_Forward.I_ * TotalError) + (PID_Forward.D_ * (Error - PrevError));
+
+	//4. Normalize output
+	 if(Forward < -1)
+		 Forward = -1;
+	 if(Forward > 1)
+		 Forward = 1;
+
+	 Forward = MaxVel * Forward;
+
+	return Forward;
+
 }
 

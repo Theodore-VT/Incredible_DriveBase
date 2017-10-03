@@ -1,8 +1,10 @@
-#ifndef POINT_H
-#define POINT_H
 
 #include <Math.h>
 #include <stdlib.h>
+
+#ifndef POINT_H
+#define POINT_H
+
 class Point
 {
 public:
@@ -10,6 +12,7 @@ public:
 	Point(Point point1, Point point2);
 
 	void RotateBy(float Angle_Degrees);
+
 
 	float Enclidean_Dist();
 
@@ -37,6 +40,8 @@ void Point::RotateBy(float Angle)
 	X_ = X_ * std::cos(float(Angle / 180 * M_PI)) - Y_ * std::sin(float(Angle / 180 * M_PI));
 	Y_ = Y_ * std::sin(float(Angle / 180 * M_PI)) + temp * std::cos(float(Angle / 180 * M_PI));
 }
+
+
 
 float Point::Enclidean_Dist()
 {

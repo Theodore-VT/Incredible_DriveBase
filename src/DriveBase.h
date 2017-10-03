@@ -5,10 +5,10 @@
 #include <CANTalon.h>
 #include <Solenoid.h>
 
-#include <Config.h>
+#include "Config.h"
 #include <iostream>
-#include <Path/Path.h>
-#include <src/Point.h>
+#include "Path.h"
+#include "Point.h"
 
 #define OPEN_LOOP 0     			// Open loop voltage control
 #define CLOSED_LOOP 1   			// Closed loop PID control
@@ -23,6 +23,7 @@ public:
 
 	void Drive(double X_Axis, double Y_Axis);
 	void Drive(Path path);
+	void Drive(Path path, double X_Axis, double Y_Axis);
 
 	void TurnToHeading(double WantedAngle);
 	void DriveStraightLine(double Dist);
@@ -30,6 +31,8 @@ public:
 	void SetWantedState(int WantedState);
 
 	void Update(double TimeStamp);
+
+	float Velocity();	//returns velocity in m / s
 
 private:
 
@@ -39,6 +42,8 @@ private:
 
 
 	int State_, WantedState_;
+
+	float Velocity_;
 
 	double Timer;
 

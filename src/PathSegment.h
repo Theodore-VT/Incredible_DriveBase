@@ -23,13 +23,13 @@
 #define NO_RADIUS 0
 
 #include "Point.h"
-#include <Math.h>
-#include "src/PID.h"
+#include "Math.h"
+#include "PID.h"
 
 class Path_Segment
 {
 public:
-	Path_Segment(Point Start, Point End, Point Center = NULL);
+	Path_Segment(float MaxVelocity, Point Start, Point End, Point Center = NULL);
 	Path_Segment(Point Start, Point End, float Radius);
 	virtual ~Path_Segment();
 
@@ -47,9 +47,11 @@ private:
 	//Only for arc segments
 	double Radius_;
 
+	float MaxVel;
+
 	Point Start_, End_, Center_;
 
-	PID PID_;
+	PID PID_Steering, PID_Forward;
 };
 
 #endif
