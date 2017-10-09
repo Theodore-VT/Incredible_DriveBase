@@ -7,8 +7,8 @@
 
 #include "Config.h"
 #include <iostream>
-#include "Path.h"
-#include "Point.h"
+#include "Path/Path.h"
+#include "Path/Point.h"
 
 #define OPEN_LOOP 0     			// Open loop voltage control
 #define CLOSED_LOOP 1   			// Closed loop PID control
@@ -18,7 +18,7 @@
 class DriveBase
 {
 public:
-	DriveBase(double TimeStamp);
+	DriveBase();
 	virtual ~DriveBase();
 
 	void Drive(double X_Axis, double Y_Axis);
@@ -36,7 +36,15 @@ public:
 
 private:
 
-	CANTalon DriveMotors[6];
+	//CANTalon DriveMotors[6];
+
+	CANTalon DriveMotorFR;
+	CANTalon DriveMotorFL;
+	CANTalon DriveMotorBR;
+	CANTalon DriveMotorBL;
+	CANTalon DriveMotorMR;
+	CANTalon DriveMotorML;
+
 
 	double Speeds[2];	//6 motors, 2 sides
 

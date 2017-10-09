@@ -3,12 +3,12 @@
 
 struct PID
 {
-	PID(double P, double I, double D);
-	PID(double P, double I, double D, double F);
-	double P_, I_, D_, F_;
+	PID(float P, float I, float D);
+	PID(float P, float I, float D, float F);
+	float P_, I_, D_, F_;
 };
 
-PID::PID(double P, double I, double D)
+PID::PID(float P, float I, float D)
 {
 	P_ = P;
 	I_ = I;
@@ -16,12 +16,12 @@ PID::PID(double P, double I, double D)
 	F_ = 0;
 }
 
-PID::PID(double P, double I, double D)
+PID::PID(float P, float I, float D, float F)
 {
 	P_ = P;
 	I_ = I;
 	D_ = D;
-	F_ = 0;
+	F_ = F;
 }
 
 #endif

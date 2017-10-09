@@ -28,8 +28,6 @@
 #define MOTOR_ML_PORT 8
 #define MOTOR_FL_PORT 9
 
-
-
 // ^^^^^^^^^^ Motor ports ^^^^^^^^^^ //
 
 #endif

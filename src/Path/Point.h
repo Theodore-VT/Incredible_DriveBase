@@ -1,6 +1,5 @@
 
-#include <Math.h>
-#include <stdlib.h>
+#include <cmath>
 
 #ifndef POINT_H
 #define POINT_H
@@ -14,16 +13,18 @@ public:
 	void RotateBy(float Angle_Degrees);
 
 
-	float Enclidean_Dist();
+	double Enclidean_Dist();
+	static double Calc_Enclidean_Dist(Point &A, Point &B);
+	static double Calc_Enclidean_Dist(Point &A);
 
-	float X();
-	float Y();
+	double X();
+	double Y();
 	void SetX(float X);
 	void SetY(float Y);
 
 private:
-	int X_, Y_;
-	float Enclidean_Dist_;
+	double X_, Y_;
+	double Enclidean_Dist_;
 };
 
 Point::Point(int X, int Y)
@@ -31,7 +32,7 @@ Point::Point(int X, int Y)
 	X_ = X;
 	Y_ = Y;
 
-	Enclidean_Dist_ = std::sqrt(float(std::pow(X_, 2.0) + std::pow(Y_, 2.0)));
+	Enclidean_Dist_ = std::sqrt(std::pow(X_, 2.0) + std::pow(Y_, 2.0));
 }
 
 void Point::RotateBy(float Angle)
@@ -43,12 +44,22 @@ void Point::RotateBy(float Angle)
 
 
 
-float Point::Enclidean_Dist()
+double Point::Enclidean_Dist()
 {
 	return Enclidean_Dist_;
 }
 
-float Point::X()
+double Point::Calc_Enclidean_Dist(Point &A, Point &B)
+{
+	return std::sqrt(std::pow(A.X() - B.X(), 2) + std::pow(A.Y() - B.Y(), 2));
+}
+
+double Point::Calc_Enclidean_Dist(Point &A)
+{
+	return std::sqrt(std::pow(A.X(), 2) + std::pow(A.Y(), 2));
+}
+
+double Point::X()
 {
 	return X_;
 }
@@ -58,7 +69,7 @@ void Point::SetX(float X)
 	X_ = X;
 }
 
-float Point::Y()
+double Point::Y()
 {
 	return Y_;
 }

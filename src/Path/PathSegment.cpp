@@ -2,21 +2,29 @@
 #include "PathSegment.h"
 
 Path_Segment::Path_Segment(float MaxVelocity, Point Start, Point End, Point Center):
+MaxVel(MaxVelocity),
 Start_(Start),
 End_(End),
 Center_(Center),
-MaxVel(MaxVelocity)
+PID_Steering(0.3, 0.0012, 0.0003),
+PID_Forward(0.2, 0.004, 0.00004)
+
 {
-	if(Center == NULL)
-	{
-		Segment_Type_ = STRAIGHT_LINE;
-		Radius_ = Point(Center_, Start_).Enclidean_Dist;
-	}
-	else
-	{
+		Radius_ = Point(Center_, Start_).Enclidean_Dist();
 		Segment_Type_ = ARC;
-		Radius_ = NO_RADIUS;
-	}
+}
+
+Path_Segment::Path_Segment(float MaxVelocity, Point Start, Point End):
+MaxVel(MaxVelocity),
+Start_(Start),
+End_(End),
+Center_(-1, -1),
+PID_Steering(0.3, 0.012, 0.003),
+PID_Forward(0.1, 0.0007, 0.00605)
+
+{
+	Segment_Type_ = STRAIGHT_LINE;
+	Radius_ = NO_RADIUS;
 }
 
 Path_Segment::~Path_Segment()
@@ -54,12 +62,11 @@ double Path_Segment::Distance(Point From, int To)
 
 		else if(Segment_Type_ == ARC)
 		{
-			return Point(From, this->GetClosestPoint(From).Enclidean_Dist());
+			return Point(From, this->GetClosestPoint(From)).Enclidean_Dist();
 		}
 	}
 
-	else
-		return -1;	//Error
+	return -1.0;	//Error
 }
 
 Point Path_Segment::GetClosestPoint(Point From)
@@ -97,7 +104,7 @@ float Path_Segment::GetSteeringAngle(Point RobotPos)
 	static float Error, PrevError, TotalError;
 	//1. find of wich side of the line we are
 	//Delta < 0 : one side; Delta > 0 : other side
-	float Delta = (RobotPos.X() - Start_.X()) * (End_.Y() - Start_.Y()) -
+	double Delta = (RobotPos.X() - Start_.X()) * (End_.Y() - Start_.Y()) -
 				  (RobotPos.Y() - Start_.Y()) * (End_.X() - Start_.X());	//This methode is called theouter product
 
 

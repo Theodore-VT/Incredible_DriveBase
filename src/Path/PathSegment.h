@@ -24,12 +24,13 @@
 
 #include "Point.h"
 #include "Math.h"
-#include "PID.h"
+#include "../PID.h"
 
 class Path_Segment
 {
 public:
-	Path_Segment(float MaxVelocity, Point Start, Point End, Point Center = NULL);
+	Path_Segment(float MaxVelocity, Point Start, Point End, Point Center);
+	Path_Segment(float MaxVelocity, Point Start, Point End);
 	Path_Segment(Point Start, Point End, float Radius);
 	virtual ~Path_Segment();
 
